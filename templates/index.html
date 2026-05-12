@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Bitcoin Dashboard</title>
+
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='style.css') }}"
+    >
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- Sidebar -->
+
+    <div class="sidebar">
+
+        <h2>Insertion Dates</h2>
+
+        {% for row in history %}
+
+            <a href="/dashboard/{{ row.insertion_date }}">
+
+                <button class="sidebar-btn">
+
+                    {{ row.insertion_date }}
+
+                </button>
+
+            </a>
+
+        {% endfor %}
+
+    </div>
+
+    <!-- Main Content -->
+
+    <div class="main-content">
+
+        <h1>Bitcoin Forecast Dashboard</h1>
+
+        {% if selected_date %}
+            <h3>{{ selected_date }}</h3>
+        {% endif %}
+
+        <div id="chart"></div>
+
+    </div>
+
+</div>
+
+{% if graphJSON %}
+
+<script>
+
+    var graph = {{ graphJSON | safe }};
+
+    Plotly.newPlot(
+        'chart',
+        graph.data,
+        graph.layout
+    );
+
+</script>
+
+{% endif %}
+
+</body>
+
+</html>
